@@ -112,28 +112,8 @@ void main() {
 		finalOut = saturate(finalOut);
 	#endif
 
-	#ifdef DEBUG_CLOUD_SHADOWS
-		if (all(lessThan(texelPos, textureSize(cloudShadowTex, 0)))) {
-			finalOut = vec3(texelFetch(cloudShadowTex, texelPos, 0).x);
-		}
-	#endif
 
-	#ifdef DEBUG_CLOUD_MAP
-		ivec2 tempTexel = texelPos;
-		if (all(lessThan(tempTexel, textureSize(cloudMapTex, 0)))) {
-			finalOut = vec3(texelFetch(cloudMapTex, tempTexel, 0).x);
-		}
-		tempTexel -= ivec2(textureSize(cloudMapTex, 0).x, 0);
-		if (all(greaterThanEqual(tempTexel, ivec2(0)) && lessThan(tempTexel, textureSize(cloudMapTex, 0)))) {
-			finalOut = vec3(texelFetch(cloudMapTex, tempTexel, 0).y);
-		}
-	#endif
 
-	#ifdef DEBUG_CLOUD_NOISE
-		if (all(lessThan(texelPos, textureSize(baseNoiseTex, 0).xy))) {
-			finalOut = vec3(texelFetch(baseNoiseTex, ivec3(texelPos, 0), 0).x);
-		}
-	#endif
 
 	#ifdef DEBUG_SKY_COLOR
 		if (all(lessThan(gl_FragCoord.xy * viewPixelSize, vec2(0.25)))) finalOut = skyColor;

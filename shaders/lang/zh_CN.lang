@@ -40,6 +40,7 @@ screen.WaterParams=水参数
 screen.MiscMaterials=杂项
 
 screen.FidelityFX=FidelityFX
+screen.RayTracingLike=类光追
 screen.DoF=景深
 screen.TAA=抗锯齿
 screen.MotionBlur=动态模糊
@@ -330,6 +331,11 @@ option.SELECTION_BOX_COLOR_B=选择框颜色-§1蓝
 
 
 # Post-Processing
+
+option.RAYTRACED_SHAFTS=类光追太阳光束
+option.RT_SHAFT_SAMPLES=光束采样数
+option.RT_SHAFT_INTENSITY=光束强度
+option.RT_SHAFT_DECAY=光束衰减
 option.TAA_ENABLED=时域抗锯齿(TAA)
 option.TAA_CLOSEST_FRAGMENT=片元择邻
 option.TAA_SHARPEN=锐化
@@ -374,6 +380,14 @@ option.VIGNETTE_ENABLED=暗角
 option.VIGNETTE_STRENGTH=暗角强度
 option.VIGNETTE_ROUNDNESS=暗角圆度
 
+
+option.STYLE_PROFILE=风格预设
+value.STYLE_PROFILE.STYLE_ORIGINAL=原始
+value.STYLE_PROFILE.STYLE_CINEMATIC=电影
+value.STYLE_PROFILE.STYLE_SYNTHWAVE=合成波
+option.STYLE_STRENGTH=风格强度
+option.STYLE_GRAIN=风格颗粒
+option.STYLE_VIGNETTE=风格暗角
 option.TONE_MAPPER=色调映射
 value.TONE_MAPPER.AcademyFit=ACES 拟合
 value.TONE_MAPPER.AcademyFull=ACES 完整
@@ -403,3 +417,24 @@ option.DEBUG_NORMALS=DEBUG_NORMALS
 option.DEBUG_RESHADING=DEBUG_RESHADING
 option.DEBUG_SKY_MAP=DEBUG_SKY_MAP
 option.DEBUG_SKY_COLOR=DEBUG_SKY_COLOR
+
+# Upgrade options
+option.QUALITY_PRESET=质量预设
+value.QUALITY_PRESET.LITE=轻量
+value.QUALITY_PRESET.BALANCED=均衡
+value.QUALITY_PRESET.ULTRA=极致
+option.SHADOW_FILTER_SCALE=阴影滤波半径
+option.SHADOW_SOFTNESS=软阴影强度
+option.SHADOW_BIAS_PRESET=阴影偏移预设
+value.SHADOW_BIAS_PRESET.0=保守
+value.SHADOW_BIAS_PRESET.1=均衡
+value.SHADOW_BIAS_PRESET.2=激进
+option.SHADOW_TEMPORAL_STABILITY=阴影时间稳定
+option.AO_TEMPORAL_STABILITY=AO 时间稳定
+option.BLOOM_THRESHOLD=泛光阈值
+option.BLOOM_CLAMP=泛光上限
+option.TONEMAP_CONTRAST=色调映射对比度
+option.EXPOSURE_STABILITY=曝光稳定度
+profile.LITE=轻量
+profile.BALANCED=均衡
+profile.ULTRA=极致

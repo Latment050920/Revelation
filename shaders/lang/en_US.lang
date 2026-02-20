@@ -40,6 +40,7 @@ screen.WaterParams=Water Parameters
 screen.MiscMaterials=Miscellaneous
 
 screen.FidelityFX=FidelityFX
+screen.RayTracingLike=Ray Tracing-like
 screen.DoF=DoF
 screen.TAA=TAA
 screen.MotionBlur=Motion Blur
@@ -330,6 +331,11 @@ option.SELECTION_BOX_COLOR_B=Selection Box Color §1Blue
 
 
 # Post-Processing
+
+option.RAYTRACED_SHAFTS=Ray Traced-like Sun Shafts
+option.RT_SHAFT_SAMPLES=Shaft Samples
+option.RT_SHAFT_INTENSITY=Shaft Intensity
+option.RT_SHAFT_DECAY=Shaft Decay
 option.TAA_ENABLED=Temporal Anti-Aliasing
 option.TAA_CLOSEST_FRAGMENT=Closest Fragment
 option.TAA_SHARPEN=Sharpen
@@ -374,6 +380,14 @@ option.VIGNETTE_ENABLED=Vignette
 option.VIGNETTE_STRENGTH=Vignette Strength
 option.VIGNETTE_ROUNDNESS=Vignette Roundness
 
+
+option.STYLE_PROFILE=Style Profile
+value.STYLE_PROFILE.STYLE_ORIGINAL=Original
+value.STYLE_PROFILE.STYLE_CINEMATIC=Cinematic
+value.STYLE_PROFILE.STYLE_SYNTHWAVE=Synthwave
+option.STYLE_STRENGTH=Style Strength
+option.STYLE_GRAIN=Style Grain
+option.STYLE_VIGNETTE=Style Vignette
 option.TONE_MAPPER=Tone-Mapper
 value.TONE_MAPPER.AcademyFit=ACES Fit
 value.TONE_MAPPER.AcademyFull=ACES Full
@@ -403,3 +417,24 @@ option.DEBUG_NORMALS=DEBUG_NORMALS
 option.DEBUG_RESHADING=DEBUG_RESHADING
 option.DEBUG_SKY_MAP=DEBUG_SKY_MAP
 option.DEBUG_SKY_COLOR=DEBUG_SKY_COLOR
+
+# Upgrade options
+option.QUALITY_PRESET=Quality Preset
+value.QUALITY_PRESET.LITE=Lite
+value.QUALITY_PRESET.BALANCED=Balanced
+value.QUALITY_PRESET.ULTRA=Ultra
+option.SHADOW_FILTER_SCALE=Shadow Filter Scale
+option.SHADOW_SOFTNESS=Soft Shadow Strength
+option.SHADOW_BIAS_PRESET=Shadow Bias Preset
+value.SHADOW_BIAS_PRESET.0=Conservative
+value.SHADOW_BIAS_PRESET.1=Balanced
+value.SHADOW_BIAS_PRESET.2=Aggressive
+option.SHADOW_TEMPORAL_STABILITY=Shadow Stability
+option.AO_TEMPORAL_STABILITY=AO Temporal Stability
+option.BLOOM_THRESHOLD=Bloom Threshold
+option.BLOOM_CLAMP=Bloom Clamp
+option.TONEMAP_CONTRAST=Tone Mapping Contrast
+option.EXPOSURE_STABILITY=Exposure Stability
+profile.LITE=Lite
+profile.BALANCED=Balanced
+profile.ULTRA=Ultra

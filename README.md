@@ -10,6 +10,16 @@
 * [Distant Horizons](https://www.curseforge.com/minecraft/mc-mods/distant-horizons): 2.1.0+
 * [OptiFine](https://optifine.net/home): **Incompatible**
 
+
+## Debug/View Mode
+By default, debug/view modes are disabled in `shaders/settings.glsl` (`WHITE_WORLD` is commented and `DEBUG_NORMALS=0`).
+
+To switch debug views in-game:
+1. Open **Shader Pack Settings**
+2. Go to **Debug**
+3. Enable a debug item (for example `DEBUG_NORMALS`, `DEBUG_SKY_MAP`, etc.)
+4. Set it back to default/off after inspection for normal full-color rendering
+
 ## Credits
 * [Yong-Xin Mo](https://github.com/moyongxin) - Some code and guidance
 * [GeForceLegend](https://github.com/GeForceLegend) - Some code and debugging

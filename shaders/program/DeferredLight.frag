@@ -218,7 +218,7 @@ void main() {
 			// PCSS
         	if (distanceFade < EPS) {
 				vec3 normalOffset = flatNormal * (approxSqrt(worldDistSquared) * 2e-3 + 2e-2) * (2.0 - saturate(NdotL));
-				shadow = CalculatePCSS(worldPos, normalOffset, dither, surfaceDepth);
+				shadow = CalculatePCSS(worldPos, normalOffset, NdotL, dither, surfaceDepth);
 			}
 
 			#ifdef SCREEN_SPACE_SHADOWS
@@ -281,8 +281,10 @@ void main() {
 			vec3 ao = vec3(1.0);
 			#if AO_ENABLED == 1
 				ao.x = CalculateSSAO(screenCoord, viewPos, viewNormal, SampleStbnUnitvec2(texelPos, frameCounter));
+			ao.x = mix(ao.x, 1.0, (1.0 - AO_TEMPORAL_STABILITY) * 0.15);
 			#else
 				ao.x = CalculateGTAO(screenCoord, viewPos, viewNormal, SampleStbnVec2(texelPos, frameCounter));
+			ao.x = mix(ao.x, 1.0, (1.0 - AO_TEMPORAL_STABILITY) * 0.1);
 			#endif
 
 			#ifdef AO_MULTI_BOUNCE
