@@ -18,6 +18,7 @@
 - Added upgrade documentation: `docs/lighting-shadow-upgrade.md`.
 
 ### Changed
+- Fixed auto-exposure startup lock at `exposure.value == 0` that could produce a fully black frame on Iris 1.21.11.
 - Fixed a black/white output risk in the final pass by removing monochrome debug cloud overlays from `program/post/Final.frag`.
 - Documented debug view defaults and switching steps in `README.md`.
 - Improved PCSS stability using stable sample rotation blending to reduce shadow shimmering.

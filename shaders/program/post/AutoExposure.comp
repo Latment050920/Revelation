@@ -136,12 +136,18 @@ void main() {
         float targetExposure = exp2(AUTO_EV_BIAS - exposureCurve * avgLuminance) * 0.18;
         float prevExposure = exposure.value;
 
-        float maxDelta = mix(0.6, 0.12, EXPOSURE_STABILITY) * prevExposure;
-        targetExposure = clamp(targetExposure, prevExposure - maxDelta, prevExposure + maxDelta);
+        // Prevent startup lock at 0.0 exposure (which would keep the frame fully black)
+        if (prevExposure <= 1e-6) {
+            exposure.value = targetExposure;
+        } else {
+            float safePrevExposure = max(prevExposure, 1e-3);
+            float maxDelta = mix(0.6, 0.12, EXPOSURE_STABILITY) * safePrevExposure;
+            targetExposure = clamp(targetExposure, safePrevExposure - maxDelta, safePrevExposure + maxDelta);
 
-        float exposureRate = targetExposure > prevExposure ? EXPOSURE_SPEED_DOWN : EXPOSURE_SPEED_UP;
-        float blend = exp2(-exposureRate * frameTime * mix(1.0, 0.35, EXPOSURE_STABILITY));
-        exposure.value = mix(targetExposure, prevExposure, blend);
+            float exposureRate = targetExposure > safePrevExposure ? EXPOSURE_SPEED_DOWN : EXPOSURE_SPEED_UP;
+            float blend = exp2(-exposureRate * frameTime * mix(1.0, 0.35, EXPOSURE_STABILITY));
+            exposure.value = mix(targetExposure, safePrevExposure, blend);
+        }
 	}
 
     // Clear histogram bin
