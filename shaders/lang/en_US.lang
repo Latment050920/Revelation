@@ -374,6 +374,14 @@ option.VIGNETTE_ENABLED=Vignette
 option.VIGNETTE_STRENGTH=Vignette Strength
 option.VIGNETTE_ROUNDNESS=Vignette Roundness
 
+
+option.STYLE_PROFILE=Style Profile
+value.STYLE_PROFILE.STYLE_ORIGINAL=Original
+value.STYLE_PROFILE.STYLE_CINEMATIC=Cinematic
+value.STYLE_PROFILE.STYLE_SYNTHWAVE=Synthwave
+option.STYLE_STRENGTH=Style Strength
+option.STYLE_GRAIN=Style Grain
+option.STYLE_VIGNETTE=Style Vignette
 option.TONE_MAPPER=Tone-Mapper
 value.TONE_MAPPER.AcademyFit=ACES Fit
 value.TONE_MAPPER.AcademyFull=ACES Full
