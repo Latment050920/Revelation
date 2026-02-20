@@ -403,3 +403,24 @@ option.DEBUG_NORMALS=DEBUG_NORMALS
 option.DEBUG_RESHADING=DEBUG_RESHADING
 option.DEBUG_SKY_MAP=DEBUG_SKY_MAP
 option.DEBUG_SKY_COLOR=DEBUG_SKY_COLOR
+
+# Upgrade options
+option.QUALITY_PRESET=Quality Preset
+value.QUALITY_PRESET.LITE=Lite
+value.QUALITY_PRESET.BALANCED=Balanced
+value.QUALITY_PRESET.ULTRA=Ultra
+option.SHADOW_FILTER_SCALE=Shadow Filter Scale
+option.SHADOW_SOFTNESS=Soft Shadow Strength
+option.SHADOW_BIAS_PRESET=Shadow Bias Preset
+value.SHADOW_BIAS_PRESET.0=Conservative
+value.SHADOW_BIAS_PRESET.1=Balanced
+value.SHADOW_BIAS_PRESET.2=Aggressive
+option.SHADOW_TEMPORAL_STABILITY=Shadow Stability
+option.AO_TEMPORAL_STABILITY=AO Temporal Stability
+option.BLOOM_THRESHOLD=Bloom Threshold
+option.BLOOM_CLAMP=Bloom Clamp
+option.TONEMAP_CONTRAST=Tone Mapping Contrast
+option.EXPOSURE_STABILITY=Exposure Stability
+profile.LITE=Lite
+profile.BALANCED=Balanced
+profile.ULTRA=Ultra

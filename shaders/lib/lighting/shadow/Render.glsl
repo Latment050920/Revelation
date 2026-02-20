@@ -1,6 +1,22 @@
 
-#define PCSS_SEARCH_SAMPLES 8 // [4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 48 64]
-#define PCSS_FILTER_SAMPLES 16 // [4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 48 64]
+#ifndef PCSS_SEARCH_SAMPLES
+	#define PCSS_SEARCH_SAMPLES 8 // [4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 48 64]
+#endif
+#ifndef PCSS_FILTER_SAMPLES
+	#define PCSS_FILTER_SAMPLES 16 // [4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 48 64]
+#endif
+#ifndef SHADOW_FILTER_SCALE
+	#define SHADOW_FILTER_SCALE 1.0 // [0.5 0.75 1.0 1.25 1.5 1.75 2.0]
+#endif
+#ifndef SHADOW_SOFTNESS
+	#define SHADOW_SOFTNESS 1.0 // [0.0 0.25 0.5 0.75 1.0 1.25 1.5 2.0]
+#endif
+#ifndef SHADOW_BIAS_PRESET
+	#define SHADOW_BIAS_PRESET 1 // [0 1 2]
+#endif
+#ifndef SHADOW_TEMPORAL_STABILITY
+	#define SHADOW_TEMPORAL_STABILITY 0.75 // [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+#endif
 
 //================================================================================================//
 
@@ -31,7 +47,7 @@ uniform sampler2D shadowcolor1;
 float BlockerSearch(in vec3 shadowScreenPos, in float dither, in float searchScale) {
 	float blockerDepth = 0.0;
 
-	vec2 searchRadius = searchScale * diagonal2(shadowProjection);
+	vec2 searchRadius = searchScale * SHADOW_FILTER_SCALE * diagonal2(shadowProjection);
 
 	for (uint i = 0u; i < PCSS_SEARCH_SAMPLES; ++i) {
 		vec2 sampleCoord = shadowScreenPos.xy + sampleVogelDisk(i, PCSS_SEARCH_SAMPLES, dither) * searchRadius;
@@ -44,6 +60,28 @@ float BlockerSearch(in vec3 shadowScreenPos, in float dither, in float searchSca
 	return blockerDepth * shadowProjectionInverse[2].z;
 }
 
+
+
+float CalculateShadowBias(in float NdotL, in float distortionFactor) {
+	float slopeBias = mix(0.7, 2.0, saturate(1.0 - NdotL));
+	float angleBias = mix(1.4, 0.7, saturate(worldSunVector.y * 0.5 + 0.5));
+
+	float presetScale = 1.0;
+	#if SHADOW_BIAS_PRESET == 0
+		presetScale = 0.7;
+	#elif SHADOW_BIAS_PRESET == 2
+		presetScale = 1.35;
+	#endif
+
+	return 2.2e-8 * presetScale * (0.35 + slopeBias * angleBias) * shadowProjectionInverse[1].y * distortionFactor;
+}
+
+float StableShadowRotation(in vec3 shadowScreenPos, in float dither) {
+	vec2 shadowTexel = floor(shadowScreenPos.xy * realShadowMapRes);
+	float stableNoise = InterleavedGradientNoise(ivec2(shadowTexel));
+	float mixedNoise = mix(dither, stableNoise, SHADOW_TEMPORAL_STABILITY);
+	return mixedNoise * TAU;
+}
 vec3 CalculateWaterCaustics(in vec3 worldPos, in float waterDepth, in float dither) {
 	vec3 surfacePos = worldPos - vec3(0.0, 1.0, 0.0);
 
@@ -67,7 +105,7 @@ vec3 CalculateWaterCaustics(in vec3 worldPos, in float waterDepth, in float dith
 vec3 PercentageCloserFilter(in vec3 shadowScreenPos, in vec3 worldPos, in float dither, in float blockerDepth) {
 	const float rSteps = 1.0 / float(PCSS_FILTER_SAMPLES);
 
-	vec2 penumbraRadius = min(atmosphereModel.sun_angular_radius * 2.0 * blockerDepth, 0.25) * diagonal2(shadowProjection);
+	vec2 penumbraRadius = min(atmosphereModel.sun_angular_radius * 2.0 * blockerDepth * SHADOW_SOFTNESS, 0.25) * SHADOW_FILTER_SCALE * diagonal2(shadowProjection);
 
 	vec3 result = vec3(0.0);
 	vec2 waterData = vec2(0.0);
@@ -114,21 +152,22 @@ vec3 PercentageCloserFilter(in vec3 shadowScreenPos, in vec3 worldPos, in float 
 	return result;
 }
 
-vec3 CalculatePCSS(in vec3 worldPos, in vec3 normalOffset, in float dither, out float blockerDepth) {
+vec3 CalculatePCSS(in vec3 worldPos, in vec3 normalOffset, in float NdotL, in float dither, out float blockerDepth) {
 	blockerDepth = 0.0;
 
 	float distortionFactor;
 	vec3 shadowScreenPos = WorldToShadowScreenSpace(worldPos + normalOffset, distortionFactor);
-	shadowScreenPos.z -= 3e-8 * (1.0 + dither) * shadowProjectionInverse[1].y * distortionFactor;
+	float rotation = StableShadowRotation(shadowScreenPos, dither);
+	shadowScreenPos.z -= CalculateShadowBias(saturate(NdotL), distortionFactor);
 
 	vec3 pcss = vec3(1.0);
 	if (saturate(shadowScreenPos) == shadowScreenPos) {
-		blockerDepth = BlockerSearch(shadowScreenPos, dither * TAU, 0.15 * distortionFactor);
+		blockerDepth = BlockerSearch(shadowScreenPos, rotation, 0.15 * distortionFactor);
 
 		const float minRadius = 0.008 / atmosphereModel.sun_angular_radius;
 		float sharpenFactor = saturate(blockerDepth * rcp(minRadius));
 
-		pcss = PercentageCloserFilter(shadowScreenPos, worldPos, dither * TAU, max(blockerDepth, minRadius) * distortionFactor);
+		pcss = PercentageCloserFilter(shadowScreenPos, worldPos, rotation, max(blockerDepth, minRadius) * distortionFactor);
 		pcss = mix(smoothstep(0.3, 0.7, pcss), pcss, sharpenFactor); // Sharpen the edges of the shadow
 	}
 

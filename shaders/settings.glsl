@@ -18,6 +18,11 @@
 #define INFO   Alpha // Development stage of the shaderpack. [Alpha Beta Release]
 #define AUTHOR HaringPro // Copyright holder of the shaderpack. [HaringPro]
 
+#define LITE 0
+#define BALANCED 1
+#define ULTRA 2
+#define QUALITY_PRESET BALANCED // [LITE BALANCED ULTRA]
+
 const int shadowMapResolution = 2048;  // [1024 2048 4096 8192 16384 32768]
 const float	shadowDistance 	  = 192.0; // [64.0 80.0 96.0 112.0 128.0 160.0 192.0 224.0 256.0 320.0 384.0 512.0 768.0 1024.0 2048.0 4096.0 8192.0 16384.0 32768.0 65536.0]
 
@@ -55,7 +60,13 @@ const ivec2 skyMapRes = ivec2(256, 256);
 	#define BLINDNESS_DARKNESS_FOG // Enables blindness & darkness fog
 
 	#define VOLUMETRIC_FOG // Enables volumetric fog
-	#define VF_MAX_SAMPLES 16 // Maximum sample count of volumetric fog. [2 4 6 8 9 10 12 14 15 16 18 20 24 28 30 40 50 70 100 150 200 300 500]
+	#if QUALITY_PRESET == LITE
+		#define VF_MAX_SAMPLES 10
+	#elif QUALITY_PRESET == ULTRA
+		#define VF_MAX_SAMPLES 24
+	#else
+		#define VF_MAX_SAMPLES 16
+	#endif // Maximum sample count of volumetric fog. [2 4 6 8 9 10 12 14 15 16 18 20 24 28 30 40 50 70 100 150 200 300 500]
 
 	#define LOW 0
 	#define MEDIUM 1
@@ -72,7 +83,13 @@ const ivec2 skyMapRes = ivec2(256, 256);
 	#define VF_MIE_DENSITY_RAIN_MULT 2.0 // [0.0 0.5 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5 6.0 6.5 7.0 7.5 8.0 8.5 9.0 9.5 10.0 10.5 11.0 11.5 12.0 12.5 13.0 13.5 14.0 14.5 15.0 15.5 16.0 16.5 17.0 17.5 18.0 18.5 19.0 19.5 20.0]
 
 	#define UW_VOLUMETRIC_FOG // Enables underwater volumetric fog
-	#define UW_VF_MAX_SAMPLES 16 // Maximum sample count of underwater volumetric fog. [2 4 6 8 9 10 12 14 15 16 18 20 22 24 26 28 30 40 50 70 100 150 200 300 500]
+	#if QUALITY_PRESET == LITE
+		#define UW_VF_MAX_SAMPLES 10
+	#elif QUALITY_PRESET == ULTRA
+		#define UW_VF_MAX_SAMPLES 24
+	#else
+		#define UW_VF_MAX_SAMPLES 16
+	#endif // Maximum sample count of underwater volumetric fog. [2 4 6 8 9 10 12 14 15 16 18 20 22 24 26 28 30 40 50 70 100 150 200 300 500]
 
 	#ifdef PER_BIOME_FOG
 	#endif
@@ -147,12 +164,48 @@ const ivec2 skyMapRes = ivec2(256, 256);
 	#define GTAO 2
 	#define AO_ENABLED GTAO // Enables ambient occlusion. [OFF SSAO GTAO]
 	#define AO_MULTI_BOUNCE // Enables ambient occlusion multi-bounce
+	#define AO_TEMPORAL_STABILITY 0.7 // [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+
+	#if QUALITY_PRESET == LITE
+		#define SSAO_SAMPLES 8
+		#define GTAO_SLICES 2
+		#define GTAO_DIRECTION_SAMPLES 3
+	#elif QUALITY_PRESET == ULTRA
+		#define SSAO_SAMPLES 20
+		#define GTAO_SLICES 4
+		#define GTAO_DIRECTION_SAMPLES 6
+	#else
+		#define SSAO_SAMPLES 12
+		#define GTAO_SLICES 2
+		#define GTAO_DIRECTION_SAMPLES 4
+	#endif
 
 /* Shadows */
 	#define COLORED_SHADOWS // Enables shadow stained glass tint
+	#define SHADOW_FILTER_SCALE 1.0 // [0.5 0.75 1.0 1.25 1.5 1.75 2.0]
+	#define SHADOW_SOFTNESS 1.0 // [0.0 0.25 0.5 0.75 1.0 1.25 1.5 2.0]
+	#define SHADOW_BIAS_PRESET 1 // [0 1 2]
+	#define SHADOW_TEMPORAL_STABILITY 0.75 // [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+
+	#if QUALITY_PRESET == LITE
+		#define PCSS_SEARCH_SAMPLES 6
+		#define PCSS_FILTER_SAMPLES 10
+	#elif QUALITY_PRESET == ULTRA
+		#define PCSS_SEARCH_SAMPLES 16
+		#define PCSS_FILTER_SAMPLES 28
+	#else
+		#define PCSS_SEARCH_SAMPLES 8
+		#define PCSS_FILTER_SAMPLES 16
+	#endif
 
 	#define SCREEN_SPACE_SHADOWS // Enables screen space shadows
-	#define SCREEN_SPACE_SHADOWS_SAMPLES 16 // Sample count of screen space shadows. [2 4 6 8 9 10 12 14 15 16 18 20 22 24 26 28 30 40 50 70 100 150 200 300 500]
+	#if QUALITY_PRESET == LITE
+		#define SCREEN_SPACE_SHADOWS_SAMPLES 8
+	#elif QUALITY_PRESET == ULTRA
+		#define SCREEN_SPACE_SHADOWS_SAMPLES 20
+	#else
+		#define SCREEN_SPACE_SHADOWS_SAMPLES 16
+	#endif // Sample count of screen space shadows. [2 4 6 8 9 10 12 14 15 16 18 20 22 24 26 28 30 40 50 70 100 150 200 300 500]
 
 	// #define SHADOW_BACKFACE_CULLING // Enables backface culling for shadows
 
@@ -275,6 +328,7 @@ const ivec2 skyMapRes = ivec2(256, 256);
 
 	#define EXPOSURE_SPEED_UP 2.0 // Dim to bright speed. [0.5 0.6 0.7 0.8 0.9 1.0 1.2 1.6 2.0 2.5 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 19.0 20.0 25.0 30.0 40.0 50.0]
 	#define EXPOSURE_SPEED_DOWN 1.0 // Bright to dim speed. [0.5 0.6 0.7 0.8 0.9 1.0 1.2 1.6 2.0 2.5 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 11.0 12.0 13.0 14.0 15.0 16.0 17.0 18.0 19.0 20.0 25.0 30.0 40.0 50.0]
+	#define EXPOSURE_STABILITY 0.75 // [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
 
 	#define HISTOGRAM_BIN_COUNT 128 // Number of bins for the histogram. [32 64 128 256]
 	#define HISTOGRAM_LOWER_BOUND 0.4 // [0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]

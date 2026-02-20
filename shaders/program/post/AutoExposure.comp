@@ -48,6 +48,10 @@ shared uint sharedPrefix[HISTOGRAM_BIN_COUNT];
 
 //======// Function //============================================================================//
 
+#ifndef EXPOSURE_STABILITY
+	#define EXPOSURE_STABILITY 0.75 // [0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0]
+#endif
+
 const float autoEvRange = AUTO_EV_MAX - AUTO_EV_MIN;
 const float autoEvRangeInv = 1.0 / autoEvRange;
 
@@ -132,8 +136,12 @@ void main() {
         float targetExposure = exp2(AUTO_EV_BIAS - exposureCurve * avgLuminance) * 0.18;
         float prevExposure = exposure.value;
 
+        float maxDelta = mix(0.6, 0.12, EXPOSURE_STABILITY) * prevExposure;
+        targetExposure = clamp(targetExposure, prevExposure - maxDelta, prevExposure + maxDelta);
+
         float exposureRate = targetExposure > prevExposure ? EXPOSURE_SPEED_DOWN : EXPOSURE_SPEED_UP;
-        exposure.value = mix(targetExposure, prevExposure, exp2(-exposureRate * frameTime));
+        float blend = exp2(-exposureRate * frameTime * mix(1.0, 0.35, EXPOSURE_STABILITY));
+        exposure.value = mix(targetExposure, prevExposure, blend);
 	}
 
     // Clear histogram bin
