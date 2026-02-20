@@ -307,6 +307,12 @@ const ivec2 skyMapRes = ivec2(256, 256);
 	#define MOTION_BLUR_SAMPLES 6 // Sample count of motion blur. [2 3 4 5 6 7 8 9 10 12 14 16 18 20 22 24]
 	#define MOTION_BLUR_STRENGTH 0.5 // Strength of the motion blur. [0.0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 0.6 0.7 0.8 0.9 1.0 1.2 1.4 1.5 1.7 2.0 2.5 3.0 3.5 4.0 4.5 5.0 7.0 10.0 12.0 14.0 16.0 18.0 20.0]
 
+/* Ray Tracing-like */
+	#define RAYTRACED_SHAFTS // Screen-space ray marched sun shafts (ray tracing-like)
+	#define RT_SHAFT_SAMPLES 12 // [4 6 8 10 12 14 16 18 20 24 28 32]
+	#define RT_SHAFT_INTENSITY 0.5 // [0.0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 0.6 0.7 0.8 0.9 1.0 1.2 1.5 2.0]
+	#define RT_SHAFT_DECAY 0.92 // [0.7 0.75 0.8 0.85 0.9 0.92 0.94 0.96 0.98]
+
 /* Bloom */
 	#define BLOOM
 	#define BLOOMY_FOG

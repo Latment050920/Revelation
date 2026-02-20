@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- Added a ray tracing-like post effect: screen-space ray marched sun shafts (`RAYTRACED_SHAFTS`) with sample/intensity/decay controls.
 - Added a new stylized color-grading system with `STYLE_PROFILE` (`ORIGINAL`, `CINEMATIC`, `SYNTHWAVE`), plus `STYLE_STRENGTH`, `STYLE_GRAIN`, and `STYLE_VIGNETTE` controls for dramatically different art direction.
 - New quality preset system: `QUALITY_PRESET` (`LITE`, `BALANCED`, `ULTRA`) with matching shader profiles.
 - New shadow tuning options:

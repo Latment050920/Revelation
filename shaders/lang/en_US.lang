@@ -40,6 +40,7 @@ screen.WaterParams=Water Parameters
 screen.MiscMaterials=Miscellaneous
 
 screen.FidelityFX=FidelityFX
+screen.RayTracingLike=Ray Tracing-like
 screen.DoF=DoF
 screen.TAA=TAA
 screen.MotionBlur=Motion Blur
@@ -330,6 +331,11 @@ option.SELECTION_BOX_COLOR_B=Selection Box Color §1Blue
 
 
 # Post-Processing
+
+option.RAYTRACED_SHAFTS=Ray Traced-like Sun Shafts
+option.RT_SHAFT_SAMPLES=Shaft Samples
+option.RT_SHAFT_INTENSITY=Shaft Intensity
+option.RT_SHAFT_DECAY=Shaft Decay
 option.TAA_ENABLED=Temporal Anti-Aliasing
 option.TAA_CLOSEST_FRAGMENT=Closest Fragment
 option.TAA_SHARPEN=Sharpen
