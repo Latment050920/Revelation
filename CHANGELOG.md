@@ -18,6 +18,8 @@
 - Added upgrade documentation: `docs/lighting-shadow-upgrade.md`.
 
 ### Changed
+- Fixed a black/white output risk in the final pass by removing monochrome debug cloud overlays from `program/post/Final.frag`.
+- Documented debug view defaults and switching steps in `README.md`.
 - Improved PCSS stability using stable sample rotation blending to reduce shadow shimmering.
 - Added adaptive shadow bias logic (slope + sun-angle aware) to reduce acne and Peter-panning.
 - Exposure adaptation now limits per-frame jumps and smooths transitions.
